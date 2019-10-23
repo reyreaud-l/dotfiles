@@ -1,0 +1,161 @@
+
+[[ $- != *i* ]] && return
+
+linux_setup()
+{
+  alias ls='ls -l --color=auto'
+  alias i3lock_refresh="betterlockscreen -u $HOME/.config/bg/wallpaper.png"
+  alias i3lock="betterlockscreen -l"
+  blight() {
+    if [[ "$#" != 0 ]]; then
+      command sudo tee /sys/class/backlight/intel_backlight/brightness <<< "$1"
+    else
+      command cat /sys/class/backlight/intel_backlight/actual_brightness
+    fi
+  }
+
+  alias htop='TERM=screen htop -d 3'
+  alias wfolder='cd /home/kexo/.wine/drive_c/Program\ Files\ \(x86\)/'
+}
+
+darwin_setup()
+{
+  alias ls='ls -lG'
+  export PATH="/usr/local/sbin:$PATH"
+  export PATH="$HOME/.homebrew/bin:$PATH"
+  export PATH="/usr/local/opt/llvm/bin:$PATH"
+  export PATH="$HOME/Library/Python/3.6/bin:$PATH"
+  if [ -f $(/usr/local/bin/brew --prefix)/etc/bash_completion ]; then
+    . $(/usr/local/bin/brew --prefix)/etc/bash_completion
+  fi
+}
+
+global_setup()
+{
+  #Exports
+  export LANG=en_US.utf8
+  export LC_ALL=en_US.UTF-8
+  export EDITOR=vim
+  export PATH="/usr/local/bin:$PATH"
+  export PATH="$HOME/go/bin:$PATH"
+  export PATH="$HOME/Projects/go/bin:$PATH"
+  export PATH="$HOME/.local/bin:$PATH"
+  export PATH="$HOME/.gem/ruby/2.6.0/bin:$PATH"
+  export PATH="$PATH:$HOME/Projects/perso/go/bin"
+  export PYTHONPATH="/usr/local/lib/python3.6/site-packages:$PYTHONPATH"
+  export GOPATH="$HOME/Projects/perso/go/"
+  export GOBIN="$GOPATH/bin/"
+
+  #Aliases
+  alias tmux='tmux -2'
+  alias c='clear'
+  alias cd..='cd ..'
+  alias swapclear='rm -f ~/.cache/vim/swap/*'
+  alias bat='bat -p --paging=never'
+  alias ssh='ssh -C'
+
+  #Git custom commands
+  git() {
+    if [[ "$@" == 'log' ]]; then
+      command git log --decorate --graph --abbrev-commit --all \
+        --format=format:"%C(bold blue)%h%C(reset) - %C(cyan)(%ar)%C(reset)%C(auto)%d%C(reset)%C(cyan) - <%an>%C(reset) %C(white)%s%C(reset)"
+    elif [[ "$@" == 'total' ]]; then
+      command git rev-list --all --count
+    elif [[ "$@" == 'history' ]]; then
+      command git shortlog --all -sn
+    else
+      command git "$@"
+    fi
+  }
+
+}
+
+ps1_setup()
+{
+
+
+export PS1="... ${VENV} ..."
+
+  #Custom colors
+  BOLD="\[\033[1m\]"
+  GREEN="\[\033[0;32m\]"
+  RED="\[\e[0;31m\]"
+  NO_COLOR="\[\033[0;m\]"
+
+  function virtualenv_info(){
+    if [[ -n "$VIRTUAL_ENV" ]]; then
+        venv=":${VIRTUAL_ENV##*/}"
+    else
+        venv=''
+    fi
+    [[ -n "$venv" ]] && echo "(venv:$venv)"
+  }
+
+  #Custom PS1 and git branch parsing and display
+  parse_git_branch()
+  {
+    git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/(\1)/'
+  }
+
+  prompt_command()
+  {
+    local EXIT="$?"
+    PS1="[\u@\h$GREEN\$(virtualenv_info)$NO_COLOR]$GREEN\$(parse_git_branch)$NO_COLOR"
+
+    if [ $EXIT != 0 ]; then
+      PS1+="[${RED}$EXIT${NO_COLOR}]\$ "
+    else
+      PS1+="[${GREEN}$EXIT${NO_COLOR}]\$ "
+    fi
+    PS1+="\w\n${NO_COLOR}[\t] $> "
+  }
+  PROMPT_COMMAND=prompt_command
+  export VIRTUAL_ENV_DISABLE_PROMPT=1
+}
+
+function yay()
+{
+  command yay "$@"
+  $HOME/.config/polybar/scripts/updates-arch-refresh.sh 1>&2 2>/dev/null
+}
+
+function pacman()
+{
+  command pacman "$@"
+  $HOME/.config/polybar/scripts/updates-arch-refresh.sh 1>&2 2>/dev/null
+}
+
+function optumsoftvpn()
+{
+  if [ "$1" != "start" ] && \
+    [ "$1" != "stop" ] && \
+    [ "$1" != "restart" ] && \
+    [ "$1" != "status" ] \
+    ; then
+    echo "expect: start,stop,restart"
+    echo "got: $1"
+    return 1
+  fi
+  command sudo systemctl $1 openvpn-client@optumsoft
+}
+
+function homelabvpn()
+{
+  if [ "$1" != "start" ] && \
+    [ "$1" != "stop" ] && \
+    [ "$1" != "restart" ] && \
+    [ "$1" != "status" ] \
+    ; then
+    echo "expect: start,stop,restart"
+    echo "got: $1"
+    return 1
+  fi
+  command sudo systemctl $1 openvpn-client@homelab
+}
+if [[ "$OSTYPE" == "linux-gnu" ]]; then
+  linux_setup
+elif [[ "$OSTYPE" == "darwin"* ]]; then
+  darwin_setup
+fi
+global_setup
+ps1_setup

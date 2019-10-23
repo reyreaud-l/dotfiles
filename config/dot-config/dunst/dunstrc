@@ -1,0 +1,61 @@
+[global]
+	allow_markup = yes
+	format = "%a\n%s\n%b"
+	sort = yes
+	indicate_hidden = yes
+	alignment = left
+	bounce_freq = 0
+	show_age_threshold = 60
+	word_wrap = yes
+	ignore_newline = no
+	geometry = "350x10-10+48"
+	transparency = 0
+	idle_threshold = 120
+	monitor = 0
+	follow = mouse
+	sticky_history = yes
+	line_height = 5
+	separator_height = 0
+	padding = 10
+	horizontal_padding = 10
+	separator_color = "#bfbfbf"
+	startup_notification = false
+	show_indicators = no
+	dmenu = /usr/bin/rofi -dmenu -p dunst:
+	browser = /usr/bin/firefox -new-tab
+	icon_position = left
+	icon_folders = /usr/share/icons/Flat-Remix-Blue/apps/scalable
+  max_icon_size = 60
+
+[frame]
+  color = "#DFDFDF"
+  width = 1
+
+[shortcuts]
+	close = ctrl+space
+	close_all = ctrl+shift+space
+	history = ctrl+grave
+	context = ctrl+shift+period
+
+[urgency_low]
+	background = "#222222"
+	foreground = "#888888"
+	timeout = 5
+
+[urgency_normal]
+	background = "#285577"
+	foreground = "#ffffff"
+	timeout = 5
+
+[urgency_critical]
+	background = "#900000"
+	foreground = "#ffffff"
+	frame_color = "#ff0000"
+	timeout = 0
+
+[Spotify]
+	appname = Spotify
+	format = "<b>Now Playing:</b>\n%s\n%b"
+	new_icon = Spotify
+	timeout = 5
+# vim: ft=cfg

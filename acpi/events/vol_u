@@ -1,0 +1,2 @@
+event=button/volumeup
+action=sudo -u kexo XDG_RUNTIME_DIR=/run/user/1000 /usr/bin/pulseaudio-ctl up 5

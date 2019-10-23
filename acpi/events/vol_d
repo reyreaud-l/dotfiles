@@ -1,0 +1,2 @@
+event=button/volumedown
+action=sudo -u kexo XDG_RUNTIME_DIR=/run/user/1000 /usr/bin/pulseaudio-ctl down 5

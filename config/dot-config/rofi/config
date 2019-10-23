@@ -1,0 +1,2 @@
+rofi.modi: window,run,ssh,drun
+rofi.theme: onedark

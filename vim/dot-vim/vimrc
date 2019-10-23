@@ -1,0 +1,121 @@
+" Filetype
+filetype plugin on
+filetype indent on
+set nocompatible
+
+" Plugins
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+Plugin 'VundleVim/Vundle.vim'
+Plugin 'airblade/vim-gitgutter'
+Plugin 'christoomey/vim-tmux-navigator'
+Plugin 'vim-airline/vim-airline'
+Plugin 'vim-airline/vim-airline-themes'
+Plugin 'zenbro/mirror.vim'
+Plugin 'octol/vim-cpp-enhanced-highlight'
+Plugin 'jacoborus/tender.vim'
+Bundle 'sonph/onehalf', {'rtp': 'vim/'}
+Plugin 'dracula/vim'
+Plugin 'arcticicestudio/nord-vim'
+"Plugin 'google/vim-maktaba'
+"Plugin 'google/vim-codefmt'
+"Plugin 'google/vim-glaive'
+call vundle#end()
+
+" Colors
+syntax on
+syntax enable
+set background=dark
+if exists('+termguicolors')
+   let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+   let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+   set termguicolors
+endif
+set t_Co=256
+colorscheme nord
+highlight Normal ctermbg=NONE
+highlight nonText ctermbg=NONE
+
+" Options
+set autowrite
+set cursorline
+set number
+set expandtab
+set shiftwidth=3
+set tabstop=3
+set backspace=eol,indent,start
+set colorcolumn=85
+set textwidth=85
+set autoindent
+set viminfo='20,<1000,s1000
+set hidden
+set undofile
+set backup
+set modelines=1
+set nohlsearch
+set directory^=$HOME/.vim/tmp//
+set nobackup
+set nowritebackup
+set nojs
+set wildmode=longest,list,full
+set wildmenu
+match Error /\s\+$/
+
+set autoread
+set shortmess+=T
+set cmdheight=2
+
+" Vim last position
+if has("autocmd")
+  au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
+endif
+
+" Tmux
+if exists('$TMUX')
+    let &t_SI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=1\x7\<Esc>\\"
+    let &t_EI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=0\x7\<Esc>\\"
+else
+    let &t_SI = "\<Esc>]50;CursorShape=1\x7"
+    let &t_EI = "\<Esc>]50;CursorShape=0\x7"
+endif
+
+" Leader
+let mapleader=","
+
+" Maps
+map <up> <nop>
+map <down> <nop>
+map <left> <nop>
+map <right> <nop>
+cnoreabbrev W w
+cnoreabbrev Q q
+cnoreabbrev X x
+
+" Buffer navigation
+nmap <leader>l :bnext<CR>
+nmap <leader>h :bprev<CR>
+nmap <leader>q :bp <BAR> bd #<CR>
+nmap <leader>b :ls<CR>:b<space>
+
+" Grammar check
+nmap <leader>c :GrammarousCheck<CR>
+let g:grammarous#show_first_error = 1
+
+" Airline
+let g:airline_theme='nord'
+let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#show_tabs = 0
+let g:airline#extensions#tabline#fnamemod = ':t'
+let g:airline#extensions#bufferline#enabled = 1
+
+" vim-mirrors
+let g:mirror#config_path = expand('~/Projects/optumsoft/mirror_vim_config.yml')
+let g:mirror#spawn_command = ':silent ! '
+
+" Nord color scheme
+let g:nord_cursor_line_number_background = 1
+
+" cpp auto format
+"augroup autoformat_settings
+"  autocmd FileType c,cpp AutoFormatBuffer clang-format
+"augroup END
