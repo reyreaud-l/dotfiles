@@ -20,7 +20,7 @@ packages=(
 
 stowit() {
    echo "stow -v -R --dotfiles -t $1 $2"
-   stow -v -R --dotfiles -t "$1" "$2"
+   stow -v -R --dotfiles -t "$1" "$2" || exit 1
 }
 
 echo "==> Installing dotfiles"
