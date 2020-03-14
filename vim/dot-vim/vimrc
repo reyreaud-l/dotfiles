@@ -7,19 +7,18 @@ set nocompatible
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 Plugin 'VundleVim/Vundle.vim'
+
+Bundle 'sonph/onehalf', {'rtp': 'vim/'}
 Plugin 'airblade/vim-gitgutter'
+Plugin 'arcticicestudio/nord-vim'
 Plugin 'christoomey/vim-tmux-navigator'
+Plugin 'fatih/vim-go'
+Plugin 'jacoborus/tender.vim'
+Plugin 'ludovicchabant/vim-gutentags'
+Plugin 'octol/vim-cpp-enhanced-highlight'
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
 Plugin 'zenbro/mirror.vim'
-Plugin 'octol/vim-cpp-enhanced-highlight'
-Plugin 'jacoborus/tender.vim'
-Bundle 'sonph/onehalf', {'rtp': 'vim/'}
-Plugin 'dracula/vim'
-Plugin 'arcticicestudio/nord-vim'
-"Plugin 'google/vim-maktaba'
-"Plugin 'google/vim-codefmt'
-"Plugin 'google/vim-glaive'
 call vundle#end()
 
 " Colors
@@ -53,7 +52,8 @@ set undofile
 set backup
 set modelines=1
 set nohlsearch
-set directory^=$HOME/.vim/tmp//
+set directory^=$HOME/.vim/tmp/
+set undodir^=$HOME/.vim/undo/
 set nobackup
 set nowritebackup
 set nojs
@@ -115,7 +115,22 @@ let g:mirror#spawn_command = ':silent ! '
 " Nord color scheme
 let g:nord_cursor_line_number_background = 1
 
+" Vim go
+let g:go_highlight_functions = 1
+let g:go_fmt_autosave = 1
+let g:go_highlight_methods = 1
+let g:go_highlight_structs = 1
+let g:go_highlight_interfaces = 1
+let g:go_highlight_operators = 1
+let g:go_highlight_build_constraints = 1
+
 " cpp auto format
 "augroup autoformat_settings
 "  autocmd FileType c,cpp AutoFormatBuffer clang-format
 "augroup END
+
+" INFRA-9620 / CVE-2019-06-04
+" Please leave this as the LAST LINE in your .vimrc
+" This is a temporary kludge fix until Apple updates bundled vim package
+" <3 Infra
+set nomodeline
