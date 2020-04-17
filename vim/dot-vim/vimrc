@@ -7,18 +7,18 @@ set nocompatible
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 Plugin 'VundleVim/Vundle.vim'
-
-Bundle 'sonph/onehalf', {'rtp': 'vim/'}
-Plugin 'airblade/vim-gitgutter'
+" Color scheme
 Plugin 'arcticicestudio/nord-vim'
-Plugin 'christoomey/vim-tmux-navigator'
-Plugin 'fatih/vim-go'
-Plugin 'jacoborus/tender.vim'
-Plugin 'ludovicchabant/vim-gutentags'
-Plugin 'octol/vim-cpp-enhanced-highlight'
+" Airline
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
-Plugin 'zenbro/mirror.vim'
+" Language
+Plugin 'fatih/vim-go'
+Plugin 'ludovicchabant/vim-gutentags'
+" Git
+Plugin 'airblade/vim-gitgutter'
+" Navigation
+Plugin 'christoomey/vim-tmux-navigator'
 call vundle#end()
 
 " Colors
@@ -36,32 +36,41 @@ highlight Normal ctermbg=NONE
 highlight nonText ctermbg=NONE
 
 " Options
-set autowrite
 set cursorline
 set number
 set expandtab
-set shiftwidth=3
-set tabstop=3
+set shiftwidth=4
+set tabstop=4
 set backspace=eol,indent,start
-set colorcolumn=85
-set textwidth=85
+set colorcolumn=100
+set textwidth=100
 set autoindent
 set viminfo='20,<1000,s1000
 set hidden
-set undofile
-set backup
+" Display buffer names
 set modelines=1
+" Disable search highlights
 set nohlsearch
+" Backup options
 set directory^=$HOME/.vim/tmp/
+set backupdir^=$HOME/.vim/tmp/
 set undodir^=$HOME/.vim/undo/
 set nobackup
 set nowritebackup
+set undofile
+set backup
+set formatoptions+=rn
+
+" Wrapping lines without 2 spaces
 set nojs
+
+" Speed up syntax matching
+set re=1
+
+" Proposition when tabbing
 set wildmode=longest,list,full
 set wildmenu
 match Error /\s\+$/
-
-set autoread
 set shortmess+=T
 set cmdheight=2
 
@@ -94,12 +103,8 @@ cnoreabbrev X x
 " Buffer navigation
 nmap <leader>l :bnext<CR>
 nmap <leader>h :bprev<CR>
-nmap <leader>q :bp <BAR> bd #<CR>
+nmap <leader>q :bp <BAR> bw #<CR>
 nmap <leader>b :ls<CR>:b<space>
-
-" Grammar check
-nmap <leader>c :GrammarousCheck<CR>
-let g:grammarous#show_first_error = 1
 
 " Airline
 let g:airline_theme='nord'
@@ -107,10 +112,6 @@ let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#show_tabs = 0
 let g:airline#extensions#tabline#fnamemod = ':t'
 let g:airline#extensions#bufferline#enabled = 1
-
-" vim-mirrors
-let g:mirror#config_path = expand('~/Projects/optumsoft/mirror_vim_config.yml')
-let g:mirror#spawn_command = ':silent ! '
 
 " Nord color scheme
 let g:nord_cursor_line_number_background = 1
@@ -123,14 +124,10 @@ let g:go_highlight_structs = 1
 let g:go_highlight_interfaces = 1
 let g:go_highlight_operators = 1
 let g:go_highlight_build_constraints = 1
-
-" cpp auto format
-"augroup autoformat_settings
-"  autocmd FileType c,cpp AutoFormatBuffer clang-format
-"augroup END
+let g:go_fmt_command = "goimports"
 
 " INFRA-9620 / CVE-2019-06-04
 " Please leave this as the LAST LINE in your .vimrc
 " This is a temporary kludge fix until Apple updates bundled vim package
-" <3 Infra
+" <Infra
 set nomodeline

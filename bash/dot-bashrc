@@ -37,14 +37,9 @@ global_setup()
   export LC_ALL=en_US.UTF-8
   export EDITOR=vim
   export PATH="/usr/local/bin:$PATH"
-  export PATH="$HOME/go/bin:$PATH"
-  export PATH="$HOME/Projects/go/bin:$PATH"
-  export PATH="$HOME/.local/bin:$PATH"
-  export PATH="$HOME/.gem/ruby/2.6.0/bin:$PATH"
-  export PATH="$PATH:$HOME/Projects/perso/go/bin"
-  export PYTHONPATH="/usr/local/lib/python3.6/site-packages:$PYTHONPATH"
   export GOPATH="$HOME/Projects/perso/go/"
   export GOBIN="$GOPATH/bin/"
+  export ANSIBLE_VAULT_PASSWORD_FILE="$HOME/.ssh/ansible_password_key"
 
   #Aliases
   alias tmux='tmux -2'
@@ -125,33 +120,6 @@ function pacman()
   $HOME/.config/polybar/scripts/updates-arch-refresh.sh 1>&2 2>/dev/null
 }
 
-function optumsoftvpn()
-{
-  if [ "$1" != "start" ] && \
-    [ "$1" != "stop" ] && \
-    [ "$1" != "restart" ] && \
-    [ "$1" != "status" ] \
-    ; then
-    echo "expect: start,stop,restart"
-    echo "got: $1"
-    return 1
-  fi
-  command sudo systemctl $1 openvpn-client@optumsoft
-}
-
-function homelabvpn()
-{
-  if [ "$1" != "start" ] && \
-    [ "$1" != "stop" ] && \
-    [ "$1" != "restart" ] && \
-    [ "$1" != "status" ] \
-    ; then
-    echo "expect: start,stop,restart"
-    echo "got: $1"
-    return 1
-  fi
-  command sudo systemctl $1 openvpn-client@homelab
-}
 if [[ "$OSTYPE" == "linux-gnu" ]]; then
   linux_setup
 elif [[ "$OSTYPE" == "darwin"* ]]; then
